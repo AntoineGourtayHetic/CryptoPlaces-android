@@ -9,13 +9,13 @@ import com.android.volley.toolbox.Volley;
  * Created by antoinegourtay on 18/12/2017.
  */
 
-public class CryptoPlace extends Application
+public class CryptoPlace extends Application {
 
         private RequestQueue requestQueue;
 
         @Override
         public void onCreate() {
-            super.onCreate();   
+            super.onCreate();
             requestQueue = Volley.newRequestQueue(this);
         }
 
