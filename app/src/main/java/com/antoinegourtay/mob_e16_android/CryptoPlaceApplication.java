@@ -9,7 +9,7 @@ import com.android.volley.toolbox.Volley;
  * Created by antoinegourtay on 18/12/2017.
  */
 
-public class CryptoPlace extends Application {
+public class CryptoPlaceApplication extends Application {
 
         private RequestQueue requestQueue;
 
