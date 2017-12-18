@@ -1,7 +1,15 @@
 package com.antoinegourtay.mob_e16_android.activities;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.antoinegourtay.mob_e16_android.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -11,9 +19,22 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.List;
+
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
+    private static final String APP_NAME = "CryptoPlaces";
+    private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102;
+
     private GoogleMap mMap;
+
+    private LocationManager locationManager;
+    private LocationListener locationListener;
+    private static double latitude;
+    private static double longitude;
+    private LatLng currentPosition;
+
+    private boolean onLaunch = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +44,90 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+        /**
+         * Location management
+         */
+
+        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+
+
+        //When user location changes
+        locationListener = new LocationListener() {
+            @Override
+            public void onLocationChanged(Location location) {
+                mMap.clear();
+                Log.d(APP_NAME, "location : " + location);
+
+                //Getting the position from the LocationListener
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+
+                Log.d(APP_NAME, "latitude : " + latitude + " - longitude : " + longitude);
+
+                currentPosition = new LatLng(latitude, longitude);
+
+                //To show the blue dot on current location
+                mMap.setMyLocationEnabled(true);
+
+                //Animating the camera to the current position
+                if (onLaunch) {
+                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15));
+                    onLaunch = false;
+                }
+
+                //TODO: Make the request to get the place using crypto currencies
+            }
+
+            @Override
+            public void onStatusChanged(String provider, int status, Bundle extras) {
+                provider.toString();
+            }
+
+            @Override
+            public void onProviderEnabled(String provider) {
+                provider.toString();
+            }
+
+            @Override
+            public void onProviderDisabled(String provider) {
+                provider.toString();
+            }
+        };
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED
+                && ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    && ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION)) {
+
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
+
+            }
+        } else {
+            long minTime = 10;
+            float minDistance = 10.0f;
+
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, minTime, minDistance, locationListener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
+
+        }
     }
 
 
@@ -38,10 +143,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
     }
 }
