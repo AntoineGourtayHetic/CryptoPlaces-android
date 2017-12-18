@@ -1,4 +1,4 @@
-package com.antoinegourtay.mob_e16_android;
+package com.antoinegourtay.mob_e16_android.activities;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.antoinegourtay.mob_e16_android.R;
 
 public class MainActivity extends AppCompatActivity {
 
