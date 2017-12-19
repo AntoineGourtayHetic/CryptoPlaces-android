@@ -9,4 +9,7 @@
     <string name="title_convertor">Convertisseur</string>
     <string name="title_places">Lieux</string>
     <string name="title_portefeuille">Portefeuille</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

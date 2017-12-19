@@ -1,37 +1,28 @@
 package com.antoinegourtay.mob_e16_android.activities;
 
-import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
-import android.widget.Toast;
 
-import com.android.volley.NetworkResponse;
-import com.android.volley.Request;
-import com.android.volley.VolleyError;
-import com.antoinegourtay.mob_e16_android.CryptoPlaceApplication;
 import com.antoinegourtay.mob_e16_android.R;
-import com.antoinegourtay.mob_e16_android.response.CryptoValueResponse;
-import com.neopixl.spitfire.listener.RequestListener;
-import com.neopixl.spitfire.request.BaseRequest;
+import com.antoinegourtay.mob_e16_android.fragments.ConvertorFragment;
+import com.antoinegourtay.mob_e16_android.fragments.WalletFragment;
 
-import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
-    @BindView(R.id.textview_crypto)
-    TextView cryptoValueTextView;
+    private static final String SELECTED_ITEM = "arg_selected_item";
+
+    private int mSelectedItem;
+    private BottomNavigationView mBottomNavigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,33 +33,56 @@ public class MainActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        BottomNavigationView bottomNavigationView = (BottomNavigationView)
-                findViewById(R.id.navigation);
+        mBottomNavigation = (BottomNavigationView)
+                findViewById(R.id.navigation_bottom_bar);
 
-        bottomNavigationView.setOnNavigationItemSelectedListener(
-                new BottomNavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                        switch (item.getItemId()) {
-                            case R.id.navigation_convertor:
+        mBottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectFragment(item);
+                return true;
+            }
+        });
 
-                                break;
-                            case R.id.navigation_places:
-                                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
-                                startActivity(intent);
+        MenuItem selectedItem;
+        if (savedInstanceState != null) {
+            mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
+            selectedItem = mBottomNavigation.getMenu().findItem(mSelectedItem);
+        } else {
+            selectedItem = mBottomNavigation.getMenu().getItem(0);
+        }
+        selectFragment(selectedItem);
+    }
 
-                                break;
-                            case R.id.navigation_portefeuille:
+    private void selectFragment(MenuItem item) {
+        Fragment frag = null;
+        // init corresponding fragment
+        switch (item.getItemId()) {
+            case R.id.navigation_convertor:
+                frag = ConvertorFragment.newInstance();
+                break;
+            case R.id.navigation_places:
 
-                                break;
-                        }
-                        return false;
-                    }
-                });
+                break;
+            case R.id.navigation_portefeuille:
+                frag = WalletFragment.newInstance();
+                break;
+        }
 
-        getCryptoValue();
+        // update selected item
+        mSelectedItem = item.getItemId();
 
+        // uncheck the other items.
+        for (int i = 0; i< mBottomNavigation.getMenu().size(); i++) {
+            MenuItem menuItem = mBottomNavigation.getMenu().getItem(i);
+            menuItem.setChecked(menuItem.getItemId() == item.getItemId());
+        }
 
+        if (frag != null) {
+            FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+            ft.add(R.id.frame_layout, frag, frag.getTag());
+            ft.commit();
+        }
     }
 
     @Override
@@ -93,27 +107,9 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void getCryptoValue(){
-        BaseRequest<CryptoValueResponse> request =
-                new BaseRequest.Builder<>(Request.Method.GET
-                        , "https://api.cryptonator.com/api/ticker/btc-eur"
-                        , CryptoValueResponse.class)
-                        .listener(new RequestListener<CryptoValueResponse>() {
-                            @Override
-                            public void onSuccess(Request request, NetworkResponse response, CryptoValueResponse result) {
-                                cryptoValueTextView.setText(result.getTicker().getPrice());
-                            }
 
-                            @Override
-                            public void onFailure(Request request, NetworkResponse response, VolleyError error) {
-                                Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                        .build();
+    @Override
+    public void onPointerCaptureChanged(boolean hasCapture) {
 
-
-        CryptoPlaceApplication cryptoPlaceApplication =
-                (CryptoPlaceApplication) getApplication();
-        cryptoPlaceApplication.getRequestQueue().add(request);
     }
 }
