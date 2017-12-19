@@ -8,10 +8,25 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.antoinegourtay.mob_e16_android.CryptoPlaceApplication;
 import com.antoinegourtay.mob_e16_android.R;
+import com.antoinegourtay.mob_e16_android.response.CryptoValueResponse;
+import com.neopixl.spitfire.listener.RequestListener;
+import com.neopixl.spitfire.request.BaseRequest;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
+
+    @BindView(R.id.textview_crypto)
+    TextView cryptoValueTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        ButterKnife.bind(this);
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -28,6 +45,12 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        getCryptoValue();
+
+
+
+
     }
 
     @Override
@@ -50,5 +73,30 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void getCryptoValue(){
+        BaseRequest<CryptoValueResponse> request =
+                new BaseRequest.Builder<>(Request.Method.GET
+                        , "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,EUR,GBP"
+                        , CryptoValueResponse.class)
+                        .listener(new RequestListener<CryptoValueResponse>() {
+                            @Override
+                            public void onSuccess(Request request, NetworkResponse response, CryptoValueResponse result) {
+                                String valueToString = result.getEUR().toString();
+                                cryptoValueTextView.setText(valueToString);
+                            }
+
+                            @Override
+                            public void onFailure(Request request, NetworkResponse response, VolleyError error) {
+                                Toast.makeText(MainActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
+                            }
+                        })
+                        .build();
+
+
+        CryptoPlaceApplication cryptoPlaceApplication =
+                (CryptoPlaceApplication) getApplication();
+        cryptoPlaceApplication.getRequestQueue().add(request);
     }
 }
