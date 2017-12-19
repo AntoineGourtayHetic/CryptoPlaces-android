@@ -5,6 +5,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,6 +23,7 @@ import com.neopixl.spitfire.request.BaseRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -47,9 +49,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         getCryptoValue();
-
-
-
 
     }
 
@@ -78,13 +77,12 @@ public class MainActivity extends AppCompatActivity {
     public void getCryptoValue(){
         BaseRequest<CryptoValueResponse> request =
                 new BaseRequest.Builder<>(Request.Method.GET
-                        , "https://min-api.cryptocompare.com/data/price?fsym=BTC&tsyms=USD,EUR,GBP"
+                        , "https://api.cryptonator.com/api/ticker/btc-eur"
                         , CryptoValueResponse.class)
                         .listener(new RequestListener<CryptoValueResponse>() {
                             @Override
                             public void onSuccess(Request request, NetworkResponse response, CryptoValueResponse result) {
-                                String valueToString = result.getEUR().toString();
-                                cryptoValueTextView.setText(valueToString);
+                                cryptoValueTextView.setText(result.getTicker().getPrice());
                             }
 
                             @Override
