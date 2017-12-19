@@ -11,8 +11,7 @@ public class CryptoValueResponse {
 
     private CryptoObjectResponse ticker;
 
-    public CryptoValueResponse(){
-
+    public CryptoValueResponse() {
     }
 
     public CryptoObjectResponse getTicker() {
