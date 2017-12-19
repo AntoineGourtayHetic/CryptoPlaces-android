@@ -1,4 +1,4 @@
-package com.antoinegourtay.mob_e16_android.activities;
+package com.antoinegourtay.mob_e16_android.fragments;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -7,9 +7,12 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -17,18 +20,27 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.antoinegourtay.mob_e16_android.CryptoPlaceApplication;
 import com.antoinegourtay.mob_e16_android.R;
+import com.antoinegourtay.mob_e16_android.activities.MainActivity;
+import com.antoinegourtay.mob_e16_android.activities.MapsActivity;
 import com.antoinegourtay.mob_e16_android.response.PlacesResponse;
 import com.antoinegourtay.mob_e16_android.response.SinglePlaceResponse;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.neopixl.spitfire.listener.RequestListener;
 import com.neopixl.spitfire.request.BaseRequest;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+import static android.content.Context.LOCATION_SERVICE;
+
+
+public class MapFragment extends Fragment implements OnMapReadyCallback {
+
 
     private static final String APP_NAME = "CryptoPlaces";
     private static final int MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION = 102;
@@ -42,23 +54,34 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LatLng currentPosition;
 
     private boolean onLaunch = true;
+    private MapView mMapView;
+
+    public MapFragment() {
+        // Required empty public constructor
+    }
+
+    /**
+     * Use this factory method to create a new instance of
+     * this fragment using the provided parameters.
+     *
+     * @return A new instance of fragment MapFragment.
+     */
+    // TODO: Rename and change types and number of parameters
+    public static MapFragment newInstance() {
+
+        MapFragment fragment = new MapFragment();
+        return fragment;
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_maps);
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
 
         /**
          * Location management
          */
 
-        locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
+        locationManager = (LocationManager) getActivity().getSystemService(LOCATION_SERVICE);
 
         //When user location changes
         locationListener = new LocationListener() {
@@ -102,27 +125,27 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         };
 
-        if (ContextCompat.checkSelfPermission(this,
+        if (ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED
-                && ContextCompat.checkSelfPermission(this,
+                && ContextCompat.checkSelfPermission(getActivity(),
                 Manifest.permission.ACCESS_COARSE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {
 
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+            if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_FINE_LOCATION)
-                    && ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    && ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),
                     Manifest.permission.ACCESS_COARSE_LOCATION)) {
 
-                ActivityCompat.requestPermissions(this,
+                ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION,
                                 Manifest.permission.ACCESS_COARSE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
             } else {
                 // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
+                ActivityCompat.requestPermissions(getActivity(),
                         new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                         MY_PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION);
 
@@ -135,8 +158,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, minTime, minDistance, locationListener);
 
         }
-    }
 
+    }
 
     /**
      * Manipulates the map once available.
@@ -159,7 +182,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         .listener(new RequestListener<PlacesResponse>() {
                             @Override
                             public void onSuccess(Request request, NetworkResponse response, PlacesResponse result) {
-                                Toast.makeText(MapsActivity.this, "OK", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "OK", Toast.LENGTH_SHORT).show();
 
                                 for (SinglePlaceResponse singlePlaceResponse : result.getResults()) {
                                     LatLng markerLatLng = new LatLng(
@@ -177,14 +200,53 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                             @Override
                             public void onFailure(Request request, NetworkResponse response, VolleyError error) {
-                                Toast.makeText(MapsActivity.this, "FAIL", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "FAIL", Toast.LENGTH_SHORT).show();
                             }
                         })
                         .build();
 
 
         CryptoPlaceApplication cryptoPlaceApplication =
-                (CryptoPlaceApplication) getApplication();
+                (CryptoPlaceApplication) getActivity().getApplication();
         cryptoPlaceApplication.getRequestQueue().add(request);
     }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_map, container, false);
+        mMapView = (MapView) rootView.findViewById(R.id.mapView);
+        mMapView.onCreate(savedInstanceState);
+
+        mMapView.onResume(); // needed to get the map to display immediately
+
+        try {
+            MapsInitializer.initialize(getActivity().getApplicationContext());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        mMapView.getMapAsync(new OnMapReadyCallback() {
+            @Override
+            public void onMapReady(GoogleMap googleMap) {
+                mMap = googleMap;
+
+                // For showing a move to my location button
+                googleMap.setMyLocationEnabled(true);
+
+                // For dropping a marker at a point on the Map
+                LatLng sydney = new LatLng(-34, 151);
+                googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker Title").snippet("Marker Description"));
+
+                // For zooming automatically to the location of the marker
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(sydney).zoom(12).build();
+                googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            }
+            // Inflate the layout for this fragment
+
+        });
+        return rootView;
+
+    }
 }
+

@@ -13,6 +13,7 @@ import android.view.MenuItem;
 
 import com.antoinegourtay.mob_e16_android.R;
 import com.antoinegourtay.mob_e16_android.fragments.ConvertorFragment;
+import com.antoinegourtay.mob_e16_android.fragments.MapFragment;
 import com.antoinegourtay.mob_e16_android.fragments.WalletFragment;
 
 import butterknife.ButterKnife;
@@ -62,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
                 frag = ConvertorFragment.newInstance();
                 break;
             case R.id.navigation_places:
-
+                frag = MapFragment.newInstance();
                 break;
             case R.id.navigation_portefeuille:
                 frag = WalletFragment.newInstance();
