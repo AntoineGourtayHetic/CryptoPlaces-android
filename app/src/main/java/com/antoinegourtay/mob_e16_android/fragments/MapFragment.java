@@ -87,7 +87,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
         locationListener = new LocationListener() {
             @Override
             public void onLocationChanged(Location location) {
-                mMap.clear();
+
+                mMapView.getMapAsync(new OnMapReadyCallback() {
+                    @Override
+                    public void onMapReady(GoogleMap googleMap) {
+                        googleMap.clear();
+                    }
+                });
+
                 Log.d(APP_NAME, "location : " + location);
 
                 //Getting the position from the LocationListener
@@ -98,12 +105,15 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 currentPosition = new LatLng(latitude, longitude);
 
-                //To show the blue dot on current location
-                mMap.setMyLocationEnabled(true);
-
                 //Animating the camera to the current position
                 if (onLaunch) {
-                    mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15));
+
+                    mMapView.getMapAsync(new OnMapReadyCallback() {
+                        @Override
+                        public void onMapReady(GoogleMap googleMap) {
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 15));
+                        }
+                    });
                     onLaunch = false;
                 }
 

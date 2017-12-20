@@ -80,8 +80,9 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (frag != null) {
+            
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.frame_layout, frag, frag.getTag());
+            ft.replace(R.id.frame_layout, frag, frag.getTag());
             ft.commit();
         }
     }

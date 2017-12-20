@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     tools:context="com.antoinegourtay.mob_e16_android.activities.OnboardingActivity">
 
+
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -29,10 +31,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="start"
-        app:layout_constraintBottom_toBottomOf="@+id/frame_layout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:menu="@menu/navigation" />
 
 </android.support.constraint.ConstraintLayout>
+
 
