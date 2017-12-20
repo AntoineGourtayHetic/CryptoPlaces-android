@@ -75,29 +75,24 @@ public class WalletFragment extends Fragment {
         if (viewPager != null) {
             viewPager.setAdapter(adapter);
         }
-        // Give the TabLayout the ViewPager
-        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_wallet);
 
-
-        if (tabLayout != null) {
-            tabLayout.setupWithViewPager(viewPager);
-        }
-
-        tabLayout.addTab(tabLayout.newTab().setText("Cours"));
-        tabLayout.addTab(tabLayout.newTab().setText("Transaction"));
-
-
-      /*  tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_wallet);
+        tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_wallet);
         viewPager = (ViewPager) rootView.findViewById(R.id.pager_wallet);
-        walletAdapter = new WalletAdapter(getChildFragmentManager(), tabNames);
 
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        viewPager.setAdapter(walletAdapter);
+        createViewPager(viewPager);
+
         tabLayout.setupWithViewPager(viewPager);
-*/
-
 
         return rootView;
+    }
+
+    private void createViewPager(ViewPager viewPager) {
+        WalletAdapter adapter = new WalletAdapter(getChildFragmentManager());
+        adapter.addFrag(new CoursFragment(), "Cours");
+        adapter.addFrag(new TransactionFragment(), "Transactions");
+        viewPager.setAdapter(adapter);
     }
 
 }

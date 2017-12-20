@@ -8,6 +8,7 @@ import com.antoinegourtay.mob_e16_android.fragments.CoursFragment;
 import com.antoinegourtay.mob_e16_android.fragments.TransactionFragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by antoinegourtay on 20/12/2017.
@@ -17,25 +18,32 @@ public class WalletAdapter extends FragmentPagerAdapter {
 
     private Fragment mCurrentFragement;
 
+    private final List<Fragment> mFragmentList = new ArrayList<>();
+    private final List<String> mFragmentTitleList = new ArrayList<>();
+
     public WalletAdapter(FragmentManager fm) {
         super(fm);
     }
 
+
     @Override
     public Fragment getItem(int position) {
-        if (position == 0) {
-            return new CoursFragment();
-        } else if (position == 1){
-            return new TransactionFragment();
-        } else {
-            return null;
-        }
+        return mFragmentList.get(position);
     }
-
 
     @Override
     public int getCount() {
-        return 5;
+        return mFragmentList.size();
+    }
+
+    public void addFrag(Fragment fragment, String title) {
+        mFragmentList.add(fragment);
+        mFragmentTitleList.add(title);
+    }
+
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mFragmentTitleList.get(position);
     }
 
     public Fragment getmCurrentFragement(){
