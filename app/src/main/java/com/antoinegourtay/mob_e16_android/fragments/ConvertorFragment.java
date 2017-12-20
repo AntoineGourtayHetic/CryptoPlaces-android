@@ -2,10 +2,15 @@ package com.antoinegourtay.mob_e16_android.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -41,8 +46,17 @@ public class ConvertorFragment extends Fragment {
     @BindView(R.id.spinnerTarget)
     Spinner spinnerTarget;
 
+    @BindView(R.id.editTextWantedValue)
+    EditText editTextWantedValue;
+
+    @BindView(R.id.textViewResult)
+    TextView textViewResult;
+
     //Helping varibles
     private boolean isOnBasicSpinner = true;
+
+    Double valueOfOne;
+
 
     public ConvertorFragment() {
         // Required empty public constructor
@@ -80,12 +94,17 @@ public class ConvertorFragment extends Fragment {
         addCryptoCurrenciesToSpinner();
         addBasicCurrenciesToSpinner();
 
-
         return view;
     }
 
+    public interface APIConvertCallback {
+        void success(double value);
+        void fail();
+    }
+
     // Function to get currency
-    public double getCryptoValueOne(String baseCurrency, String targetCurrency){
+    public void getCryptoValueOne(String baseCurrency, String targetCurrency, final APIConvertCallback callback){
+
         BaseRequest<CryptoValueResponse> request =
                 new BaseRequest.Builder<>(Request.Method.GET
                         , "https://api.cryptonator.com/api/ticker/" + baseCurrency.toLowerCase() + "-" + targetCurrency.toLowerCase()
@@ -93,11 +112,13 @@ public class ConvertorFragment extends Fragment {
                         .listener(new RequestListener<CryptoValueResponse>() {
                             @Override
                             public void onSuccess(Request request, NetworkResponse response, CryptoValueResponse result) {
+                                valueOfOne = Double.parseDouble(result.getTicker().getPrice());
+                                callback.success(valueOfOne);
                             }
 
                             @Override
                             public void onFailure(Request request, NetworkResponse response, VolleyError error) {
-                                Toast.makeText(getActivity(), "FAIL", Toast.LENGTH_SHORT).show();
+                                callback.fail();
                             }
                         })
                         .build();
@@ -107,7 +128,6 @@ public class ConvertorFragment extends Fragment {
                 (CryptoPlaceApplication) getActivity().getApplication();
         cryptoPlaceApplication.getRequestQueue().add(request);
 
-        return 0;
     }
 
     /**
@@ -144,6 +164,26 @@ public class ConvertorFragment extends Fragment {
             isOnBasicSpinner = true;
 
         }
+    }
+
+    @OnClick(R.id.buttonValidateConvert)
+    void convert() {
+        getCryptoValueOne(spinnerBase.getSelectedItem().toString(), spinnerTarget.getSelectedItem().toString(), new APIConvertCallback() {
+            @Override
+            public void success(double value) {
+                Double valueToMultiply = Double.parseDouble(editTextWantedValue.getText().toString());
+                Double result = valueOfOne * valueToMultiply;
+
+                textViewResult.setText(Double.toString(result));
+
+            }
+
+            @Override
+            public void fail() {
+
+            }
+        });
+
     }
 
     /**

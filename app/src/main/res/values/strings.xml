@@ -19,4 +19,6 @@
     <string name="ignore_this_step">Ignorer cette étape</string>
     <string name="equals">=</string>
     <string name="value">Valeur</string>
+    <string name="zero">0</string>
+    <string name="convertir">Convertir</string>
 </resources>
