@@ -14,6 +14,14 @@ import com.antoinegourtay.mob_e16_android.R;
 
 public class CoursFragment extends Fragment {
 
+    private static Bundle args;
+
+
+    public static CoursFragment newInstance() {
+        CoursFragment fragment = new CoursFragment();
+        return fragment;
+    }
+
     public CoursFragment() {
         // Required empty public constructor
     }

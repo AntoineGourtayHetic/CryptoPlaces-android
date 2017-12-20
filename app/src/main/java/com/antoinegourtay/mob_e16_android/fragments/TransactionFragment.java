@@ -14,6 +14,10 @@ import com.antoinegourtay.mob_e16_android.R;
 
 public class TransactionFragment extends Fragment {
 
+    public static TransactionFragment newInstance() {
+        TransactionFragment fragment = new TransactionFragment();
+        return fragment;
+    }
 
     public TransactionFragment() {
         // Required empty public constructor
@@ -27,7 +31,7 @@ public class TransactionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView =  inflater.inflate(R.layout.fragment_cours, container, false);
+        View rootView =  inflater.inflate(R.layout.fragment_transaction, container, false);
         // Inflate the layout for this fragment
         return rootView;
     }

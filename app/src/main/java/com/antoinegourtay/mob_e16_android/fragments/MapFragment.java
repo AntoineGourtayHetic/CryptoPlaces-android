@@ -124,7 +124,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                         //Request to get all the places from the API
                         BaseRequest<PlacesResponse> request =
                                 new BaseRequest.Builder<>(Request.Method.GET
-                                        , "https://api.myjson.com/bins/wfh57"
+                                        , "https://api.myjson.com/bins/1d7qb3"
                                         , PlacesResponse.class)
                                         .listener(new RequestListener<PlacesResponse>() {
                                             @Override

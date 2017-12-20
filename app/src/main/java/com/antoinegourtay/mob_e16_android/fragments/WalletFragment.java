@@ -3,21 +3,35 @@ package com.antoinegourtay.mob_e16_android.fragments;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.antoinegourtay.mob_e16_android.R;
 import com.antoinegourtay.mob_e16_android.activities.MainActivity;
-import com.antoinegourtay.mob_e16_android.adapters.ViewPagerAdapter;
+import com.antoinegourtay.mob_e16_android.adapters.WalletAdapter;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class WalletFragment extends Fragment {
 
     private MainActivity mainActivity;
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    TabLayout tabLayout;
+
+    ViewPager viewPager;
+
+    List<String> tabNames;
+    private WalletAdapter walletAdapter;
 
     public WalletFragment() {
         // Required empty public constructor
@@ -38,9 +52,9 @@ public class WalletFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setRetainInstance(true);
 
-        mainActivity = (MainActivity) getActivity();
-        mainActivity.getSupportActionBar().setTitle("Portefeuille");
+
     }
 
     @Override
@@ -49,22 +63,41 @@ public class WalletFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
 
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.getSupportActionBar().setTitle("Portefeuille");
 
-        viewPager = (ViewPager) getActivity().findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager_wallet);
 
-        tabLayout = (TabLayout) getActivity().findViewById(R.id.tabs);
+        // Create an adapter that knows which fragment should be shown on each page
+        WalletAdapter adapter = new WalletAdapter(getFragmentManager());
+
+        // Set the adapter onto the view pager
+        if (viewPager != null) {
+            viewPager.setAdapter(adapter);
+        }
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_wallet);
+
+
+        if (tabLayout != null) {
+            tabLayout.setupWithViewPager(viewPager);
+        }
+
+        tabLayout.addTab(tabLayout.newTab().setText("Cours"));
+        tabLayout.addTab(tabLayout.newTab().setText("Transaction"));
+
+
+      /*  tabLayout = (TabLayout) rootView.findViewById(R.id.tab_layout_wallet);
+        viewPager = (ViewPager) rootView.findViewById(R.id.pager_wallet);
+        walletAdapter = new WalletAdapter(getChildFragmentManager(), tabNames);
+
+
+        viewPager.setAdapter(walletAdapter);
         tabLayout.setupWithViewPager(viewPager);
+*/
+
 
         return rootView;
-    }
-
-
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getFragmentManager());
-        adapter.addFrag(new CoursFragment(), "Cours");
-        adapter.addFrag(new TransactionFragment(), "Transactions");
-        viewPager.setAdapter(adapter);
     }
 
 }
