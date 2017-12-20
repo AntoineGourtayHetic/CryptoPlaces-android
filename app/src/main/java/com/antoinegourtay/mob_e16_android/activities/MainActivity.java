@@ -45,14 +45,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        MenuItem selectedItem;
-        if (savedInstanceState != null) {
-            mSelectedItem = savedInstanceState.getInt(SELECTED_ITEM, 0);
-            selectedItem = mBottomNavigation.getMenu().findItem(mSelectedItem);
-        } else {
-            selectedItem = mBottomNavigation.getMenu().getItem(0);
-        }
-        selectFragment(selectedItem);
+        mBottomNavigation.setSelectedItemId(R.id.navigation_places);
+
     }
 
     private void selectFragment(MenuItem item) {
@@ -80,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (frag != null) {
-            
+
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.frame_layout, frag, frag.getTag());
             ft.commit();

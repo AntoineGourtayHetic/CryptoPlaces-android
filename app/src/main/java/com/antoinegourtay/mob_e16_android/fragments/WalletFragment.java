@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.antoinegourtay.mob_e16_android.R;
+import com.antoinegourtay.mob_e16_android.activities.MainActivity;
 
 public class WalletFragment extends Fragment {
+
+    private MainActivity mainActivity;
 
     public WalletFragment() {
         // Required empty public constructor
@@ -31,6 +34,9 @@ public class WalletFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.getSupportActionBar().setTitle("Portefeuille");
     }
 
     @Override

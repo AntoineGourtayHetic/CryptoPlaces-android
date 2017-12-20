@@ -14,11 +14,14 @@ import com.android.volley.Request;
 import com.android.volley.VolleyError;
 import com.antoinegourtay.mob_e16_android.CryptoPlaceApplication;
 import com.antoinegourtay.mob_e16_android.R;
+import com.antoinegourtay.mob_e16_android.activities.MainActivity;
 import com.antoinegourtay.mob_e16_android.response.CryptoValueResponse;
 import com.neopixl.spitfire.listener.RequestListener;
 import com.neopixl.spitfire.request.BaseRequest;
 
 public class ConvertorFragment extends Fragment {
+
+    MainActivity mainActivity;
 
 
     public ConvertorFragment() {
@@ -41,6 +44,10 @@ public class ConvertorFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         getCryptoValue();
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.getSupportActionBar().setTitle("Convertisseur");
+
     }
 
     @Override
