@@ -78,7 +78,7 @@ public class OnboardingActivity extends AppCompatActivity {
     }
 
     private void addItemsOnSpinner(){
-        currencies = new ArrayList<String>();
+        currencies = new ArrayList<>();
         currencies.add("BTC");
         currencies.add("ETH");
         currencies.add("BCH");

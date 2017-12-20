@@ -17,4 +17,6 @@
     <string name="start_button_text">Commencer</string>
     <string name="enterPublicKey">Entrez votre clé publique</string>
     <string name="ignore_this_step">Ignorer cette étape</string>
+    <string name="equals">=</string>
+    <string name="value">Valeur</string>
 </resources>
