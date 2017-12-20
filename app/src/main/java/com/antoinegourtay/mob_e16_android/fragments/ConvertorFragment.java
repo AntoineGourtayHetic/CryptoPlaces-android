@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.NetworkResponse;
@@ -17,9 +18,15 @@ import com.antoinegourtay.mob_e16_android.response.CryptoValueResponse;
 import com.neopixl.spitfire.listener.RequestListener;
 import com.neopixl.spitfire.request.BaseRequest;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ConvertorFragment extends Fragment {
 
     MainActivity mainActivity;
+
+    @BindView(R.id.testTextView)
+    TextView testTextView;
 
 
     public ConvertorFragment() {
@@ -41,18 +48,21 @@ public class ConvertorFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getCryptoValue();
-
-        mainActivity = (MainActivity) getActivity();
-        mainActivity.getSupportActionBar().setTitle("Convertisseur");
 
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_convertor, container, false);
+
+        View view = inflater.inflate(R.layout.fragment_convertor, container, false);
+        ButterKnife.bind(this, view);
+
+        mainActivity = (MainActivity) getActivity();
+        mainActivity.getSupportActionBar().setTitle("Convertisseur");
+        getCryptoValue();
+
+        return view;
     }
 
     // Function to get currency
