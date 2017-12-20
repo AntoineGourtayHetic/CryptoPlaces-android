@@ -4,7 +4,7 @@ android {
     compileSdkVersion 26
     defaultConfig {
         applicationId "com.antoinegourtay.mob_e16_android"
-        minSdkVersion 21
+        minSdkVersion 19
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -38,4 +38,7 @@ dependencies {
     //Libraries for managing JSON responses
     compile 'com.neopixl:spitfire:1.0.0'
     compile 'com.android.volley:volley:1.0.0'
+
+    //Onboarding dependencies
+    compile 'com.ogaclejapan.smarttablayout:library:1.2.1@aar'
 }
