@@ -14,6 +14,10 @@ public class SinglePlaceResponse {
     private String name;
     private List<String> currences_accepted;
     private PlacesPositionResponse position;
+    private String adresse;
+    private String category;
+    private String details;
+
 
     public SinglePlaceResponse() {
     }
