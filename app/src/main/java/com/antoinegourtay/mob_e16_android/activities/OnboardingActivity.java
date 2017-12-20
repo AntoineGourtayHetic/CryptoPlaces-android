@@ -24,12 +24,14 @@ public class OnboardingActivity extends AppCompatActivity {
 
     private List<String> currencies;
 
+    private SharedPreferences preferences;
+
     @BindView(R.id.spinnerCurrency)
     Spinner spinner;
     @BindView(R.id.buttonStart)
     Button startButton;
     @BindView(R.id.editTextPublicKey)
-    EditText publicKey;
+    EditText publicKeyEditText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +46,29 @@ public class OnboardingActivity extends AppCompatActivity {
     @SuppressLint("CommitPrefEdits")
     @OnClick(R.id.buttonStart)
     void onClickButtonStart(){
-        Toast.makeText(OnboardingActivity.this, String.valueOf(spinner.getSelectedItem()), Toast.LENGTH_LONG).show();
+        if (publicKeyEditText.getText().toString().trim().equalsIgnoreCase("")){
+            publicKeyEditText.setError("Ce champ ne peut pas être vide");
+        } else {
+            Toast.makeText(OnboardingActivity.this, String.valueOf(spinner.getSelectedItem()), Toast.LENGTH_LONG).show();
 
-        SharedPreferences preferences = getSharedPreferences("my_preferences",MODE_PRIVATE);
+            preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
 
-        preferences.edit().putString("pref_currency", String.valueOf(spinner.getSelectedItem())).apply();
+            preferences.edit().putString("pref_currency", String.valueOf(spinner.getSelectedItem())).apply();
 
+            preferences.edit().putBoolean("onboarding_complete", true).apply();
+
+            preferences.edit().putString("public_key", publicKeyEditText.getText().toString()).apply();
+
+            Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);
+            startActivity(intent);
+
+            finish();
+        }
+    }
+
+    @OnClick(R.id.buttonIgnore)
+    void onClickButtonIgnore() {
+        preferences = getSharedPreferences("my_preferences", MODE_PRIVATE);
         preferences.edit().putBoolean("onboarding_complete", true).apply();
 
         Intent intent = new Intent(OnboardingActivity.this, MainActivity.class);

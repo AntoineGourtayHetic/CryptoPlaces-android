@@ -30,19 +30,20 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
         android:ems="10"
-        android:hint="Entrez votre clé publique"
+        android:hint="@string/enterPublicKey"
         android:inputType="textPersonName"
         android:textColor="@color/white"
+        android:textColorHint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/spinnerCurrency"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/publicKeyTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/publicKeyTextView"
+        />
 
     <Spinner
         android:id="@+id/spinnerCurrency"
         android:layout_width="368dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintBottom_toTopOf="@+id/buttonStart"
@@ -55,7 +56,7 @@
         android:id="@+id/buttonStart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="50dp"
+        android:layout_marginBottom="70dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:background="@color/buttonStartColor"
@@ -64,6 +65,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/buttonIgnore"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:text="@string/ignore_this_step"
+        android:textColor="@color/white"
+        android:background="@android:color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStart" />
 
 
 </android.support.constraint.ConstraintLayout>

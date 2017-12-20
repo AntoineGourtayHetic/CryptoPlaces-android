@@ -15,4 +15,6 @@
     <string name="start">Commencer</string>
     <string name="public_key_title">Précisez votre clé publique</string>
     <string name="start_button_text">Commencer</string>
+    <string name="enterPublicKey">Entrez votre clé publique</string>
+    <string name="ignore_this_step">Ignorer cette étape</string>
 </resources>
