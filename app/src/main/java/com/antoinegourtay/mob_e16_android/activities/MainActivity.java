@@ -1,5 +1,7 @@
 package com.antoinegourtay.mob_e16_android.activities;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -28,6 +30,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        SharedPreferences preferences =  getSharedPreferences("my_preferences", MODE_PRIVATE);
+
+        // Check if onboarding_complete is false
+        if(!preferences.getBoolean("onboarding_complete",false)) {
+
+            // Start the onboarding Activity
+            Intent onboarding = new Intent(MainActivity.this, OnboardingActivity.class);
+            startActivity(onboarding);
+
+            // Close the main Activity
+            finish();
+            return;
+        }
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
