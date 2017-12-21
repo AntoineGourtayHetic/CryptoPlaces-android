@@ -8,5 +8,6 @@
     <color name="backgroundOnboarding">#55555F</color>
     <color name="white">#FFFFFF</color>
     <color name="mainColor">#55555F</color>
+    <color name="fabBg">#DB6968</color>
 
 </resources>

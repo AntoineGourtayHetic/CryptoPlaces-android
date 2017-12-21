@@ -17,6 +17,7 @@ import com.antoinegourtay.mob_e16_android.fragments.ConvertorFragment;
 import com.antoinegourtay.mob_e16_android.fragments.MapFragment;
 import com.antoinegourtay.mob_e16_android.fragments.WalletFragment;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
@@ -113,7 +114,8 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+            startActivity(intent);
         }
 
         return super.onOptionsItemSelected(item);
