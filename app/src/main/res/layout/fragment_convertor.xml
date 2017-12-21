@@ -52,10 +52,10 @@
 
         <EditText
             android:id="@+id/editTextWantedValue"
-            android:layout_width="119dp"
+            android:layout_width="98dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="16dp"
             android:layout_marginTop="72dp"
             android:ems="10"
             android:hint="@string/value"
@@ -76,35 +76,18 @@
             app:layout_constraintStart_toEndOf="@+id/equal"
             app:layout_constraintTop_toBottomOf="@+id/spinnerTarget" />
 
-        <TextView
-            android:id="@+id/equal"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="8dp"
-            android:text="@string/equals"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageButtonConvertor"
-            app:layout_constraintVertical_bias="0.232" />
-
         <Button
             android:id="@+id/buttonValidateConvert"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:text="@string/convertir"
-            android:background="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/equal"
-            />
+            android:layout_marginTop="56dp"
+            android:text="@string/equals"
+            app:layout_constraintEnd_toStartOf="@+id/textViewResult"
+            app:layout_constraintHorizontal_bias="0.301"
+            app:layout_constraintStart_toEndOf="@+id/editTextWantedValue"
+            app:layout_constraintTop_toBottomOf="@+id/imageButtonConvertor" />
 
     </android.support.constraint.ConstraintLayout>
 
