@@ -1,5 +1,7 @@
 package com.antoinegourtay.mob_e16_android.fragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -56,6 +59,9 @@ public class ConvertorFragment extends Fragment {
     private boolean isOnBasicSpinner = true;
 
     Double valueOfOne;
+
+    @BindView(R.id.ctaBuyBitcoinsConvertor)
+    Button ctaBuyBitcoins;
 
 
     public ConvertorFragment() {
@@ -219,5 +225,12 @@ public class ConvertorFragment extends Fragment {
                 android.R.layout.simple_spinner_item, basicCurrencies);
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerTarget.setAdapter(dataAdapter);
+    }
+
+    @OnClick(R.id.ctaBuyBitcoinsConvertor)
+    void onClickCTA() {
+        Uri uri = Uri.parse("https://www.coinbase.com/buy");
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 }

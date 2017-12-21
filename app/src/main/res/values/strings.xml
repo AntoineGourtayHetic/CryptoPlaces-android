@@ -28,4 +28,5 @@
     <string name="minus">-</string>
     <string name="eur">EUR</string>
     <string name="USD">USD</string>
+    <string name="buy_bitcoins">Achetez des Bitcoins</string>
 </resources>
