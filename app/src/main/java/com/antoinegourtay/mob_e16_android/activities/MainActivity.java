@@ -40,8 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
     SharedPreferences preferences;
 
-    String data;
-
     String baseUrl = "https://blockchain.info/q/addressbalance/";
     String endUrl = "?confirmations=6";
 
@@ -89,29 +87,29 @@ public class MainActivity extends AppCompatActivity {
          *
          */
 
-        String apiPublicKey = preferences.getString("public_key", null);
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
-
-                    }
-                });
-
-
-
-
-        CryptoPlaceApplication cryptoPlaceApplication =
-                (CryptoPlaceApplication) getApplication();
-        cryptoPlaceApplication.getRequestQueue().add(stringRequest);
+//        String apiPublicKey = preferences.getString("public_key", null);
+//
+//        StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
+//                new Response.Listener<String>() {
+//                    @Override
+//                    public void onResponse(String response) {
+//                        Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
+//                    }
+//                },
+//                new Response.ErrorListener() {
+//                    @Override
+//                    public void onErrorResponse(VolleyError error) {
+//                        Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+//
+//                    }
+//                });
+//
+//
+//
+//
+//        CryptoPlaceApplication cryptoPlaceApplication =
+//                (CryptoPlaceApplication) getApplication();
+//        cryptoPlaceApplication.getRequestQueue().add(stringRequest);
 
     }
 
