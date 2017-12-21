@@ -1,15 +1,11 @@
 package com.antoinegourtay.mob_e16_android.fragments;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +23,6 @@ import com.neopixl.spitfire.request.BaseRequest;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 import static android.content.Context.MODE_PRIVATE;
 
@@ -49,8 +44,6 @@ public class CoursFragment extends Fragment {
     @BindView(R.id.textViewUSDBalance)
     TextView textViewUSDBalance;
 
-    @BindView(R.id.ctaBuyBitcoinsWallet)
-    Button ctaBuyBitcoins;
 
     String baseUrl = "https://blockchain.info/q/addressbalance/";
     String endUrl = "?confirmations=6";
@@ -83,64 +76,59 @@ public class CoursFragment extends Fragment {
 
         preferences =  getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE);
 
-        if (preferences.contains("public_key")) {
+        String apiPublicKey = preferences.getString("public_key", null);
 
-            String apiPublicKey = preferences.getString("public_key", null);
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(final String response) {
+                        int balance = Integer.parseInt(response);
+                        final double realBalance = balance * satoshiMutliplicator;
+                        textViewBTCBalance.setText(String.valueOf(realBalance));
 
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(final String response) {
-                            int balance = Integer.parseInt(response);
-                            final double realBalance = balance * satoshiMutliplicator;
-                            textViewBTCBalance.setText(String.valueOf(realBalance));
+                        getCryptoValueOne("btc", "eur", new ConvertorFragment.APIConvertCallback() {
+                            @Override
+                            public void success(double value) {
+                                Double result = valueOfOne * realBalance;
+                                textViewEURBalance.setText(String.valueOf(result));
 
-                            getCryptoValueOne("btc", "eur", new ConvertorFragment.APIConvertCallback() {
-                                @Override
-                                public void success(double value) {
-                                    Double result = valueOfOne * realBalance;
-                                    textViewEURBalance.setText(String.valueOf(result));
+                                getCryptoValueOne("btc", "usd", new ConvertorFragment.APIConvertCallback() {
+                                    @Override
+                                    public void success(double value) {
+                                        Double result = valueOfOne * realBalance;
+                                        textViewUSDBalance.setText(String.valueOf(result));
+                                    }
 
-                                    getCryptoValueOne("btc", "usd", new ConvertorFragment.APIConvertCallback() {
-                                        @Override
-                                        public void success(double value) {
-                                            Double result = valueOfOne * realBalance;
-                                            textViewUSDBalance.setText(String.valueOf(result));
-                                        }
+                                    @Override
+                                    public void fail() {
 
-                                        @Override
-                                        public void fail() {
+                                    }
+                                });
+                            }
 
-                                        }
-                                    });
-                                }
+                            @Override
+                            public void fail() {
 
-                                @Override
-                                public void fail() {
+                            }
+                        });
 
-                                }
-                            });
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
 
-                        }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.e("ERROR", error.toString());
-                        }
-                    });
+                    }
+                });
 
-            CryptoPlaceApplication cryptoPlaceApplication =
-                    (CryptoPlaceApplication) getActivity().getApplication();
-            cryptoPlaceApplication.getRequestQueue().add(stringRequest);
-        } else {
-            textViewBTCBalance .setText("-");
-            textViewEURBalance .setText("-");
-            textViewUSDBalance .setText("-");
-        }
 
+
+
+        CryptoPlaceApplication cryptoPlaceApplication =
+                (CryptoPlaceApplication) getActivity().getApplication();
+        cryptoPlaceApplication.getRequestQueue().add(stringRequest);
         return rootView;
-
     }
 
     public void getCryptoValueOne(String baseCurrency, String targetCurrency, final ConvertorFragment.APIConvertCallback callback){
@@ -168,12 +156,5 @@ public class CoursFragment extends Fragment {
                 (CryptoPlaceApplication) getActivity().getApplication();
         cryptoPlaceApplication.getRequestQueue().add(request);
 
-    }
-
-    @OnClick(R.id.ctaBuyBitcoinsWallet)
-    void clickToBuy() {
-        Uri uri = Uri.parse("https://www.coinbase.com/buy");
-        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-        startActivity(intent);
     }
 }

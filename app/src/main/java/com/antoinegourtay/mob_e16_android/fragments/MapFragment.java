@@ -107,12 +107,14 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
                 currentPosition = new LatLng(latitude, longitude);
 
+                mMap.setMyLocationEnabled(true);
+
                 //Animating the camera to the current position
                 if (onLaunch) {
                     mMapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                           // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 11));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 11));
                         }
                     });
                     onLaunch = false;
