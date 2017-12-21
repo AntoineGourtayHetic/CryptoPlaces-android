@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "467823884980",
+    "firebase_url": "https://cryptoplace-f9358.firebaseio.com",
+    "project_id": "cryptoplace-f9358",
+    "storage_bucket": "cryptoplace-f9358.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467823884980:android:e2fe0800d8a809a3",
+        "android_client_info": {
+          "package_name": "com.antoinegourtay.mob_e16_android_debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467823884980-dbmge5v1v7jf63drngqr59kl8tce0s3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxJHfZCLGFQsXwOGNEHbJfQpXLePdZruA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:467823884980:android:bd2729db280032b4",
+        "android_client_info": {
+          "package_name": "com.antoinegourtay.mob_e16_android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "467823884980-dbmge5v1v7jf63drngqr59kl8tce0s3u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxJHfZCLGFQsXwOGNEHbJfQpXLePdZruA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
