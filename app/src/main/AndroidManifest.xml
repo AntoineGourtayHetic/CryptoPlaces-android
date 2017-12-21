@@ -42,7 +42,6 @@
             android:value="@string/google_maps_key" />
 
         <activity android:name=".activities.OnboardingActivity" />
-        <activity android:name=".activities.WelcomeActivity" />
         <activity
             android:name=".activities.SettingsActivity"
             android:label="@string/title_activity_settings"
