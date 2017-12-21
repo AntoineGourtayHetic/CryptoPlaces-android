@@ -39,14 +39,9 @@ public class TransactionItem extends AbstractItem<TransactionItem, TransactionVi
     public void bindView(TransactionViewholder holder, List<Object> payloads) {
         super.bindView(holder, payloads);
 
-        // Cette fonction est appeller quand la recycler view affiche une cellule en particulier
-        // Donc il faut definir les valeurs
-
         holder.setIdTransaction(this.idTransaction);
         holder.setDateTransaction(this.dateTransaction);
         holder.setAmountTransaction(this.amountTransaction);
     }
 }
 
-
-}
