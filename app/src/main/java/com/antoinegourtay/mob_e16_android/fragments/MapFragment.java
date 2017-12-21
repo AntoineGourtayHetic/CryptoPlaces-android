@@ -23,6 +23,7 @@ import com.antoinegourtay.mob_e16_android.R;
 import com.antoinegourtay.mob_e16_android.activities.MainActivity;
 import com.antoinegourtay.mob_e16_android.response.PlacesResponse;
 import com.antoinegourtay.mob_e16_android.response.SinglePlaceResponse;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
@@ -111,7 +112,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     mMapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                            //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 10));
+                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 11));
                         }
                     });
                     onLaunch = false;
