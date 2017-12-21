@@ -46,6 +46,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "467823884980-7ot49emgftcivmg69b6hd91da0bemiaa.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.antoinegourtay.mob_e16_android",
+            "certificate_hash": "cde33ff119922f3d9e54cae533845ca8cde86def"
+          }
+        },
+        {
           "client_id": "467823884980-dbmge5v1v7jf63drngqr59kl8tce0s3u.apps.googleusercontent.com",
           "client_type": 3
         }
@@ -60,8 +68,20 @@
           "status": 1
         },
         "appinvite_service": {
-          "status": 1,
-          "other_platform_oauth_client": []
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "467823884980-eoir33sb4986n7b8r2056g8flangcu8h.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "zgh"
+              }
+            },
+            {
+              "client_id": "467823884980-dbmge5v1v7jf63drngqr59kl8tce0s3u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
         },
         "ads_service": {
           "status": 2

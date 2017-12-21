@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,59 +83,64 @@ public class CoursFragment extends Fragment {
 
         preferences =  getActivity().getSharedPreferences("my_preferences", MODE_PRIVATE);
 
-        String apiPublicKey = preferences.getString("public_key", null);
+        if (preferences.contains("public_key")) {
 
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(final String response) {
-                        int balance = Integer.parseInt(response);
-                        final double realBalance = balance * satoshiMutliplicator;
-                        textViewBTCBalance.setText(String.valueOf(realBalance));
+            String apiPublicKey = preferences.getString("public_key", null);
 
-                        getCryptoValueOne("btc", "eur", new ConvertorFragment.APIConvertCallback() {
-                            @Override
-                            public void success(double value) {
-                                Double result = valueOfOne * realBalance;
-                                textViewEURBalance.setText(String.valueOf(result));
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
+                    new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(final String response) {
+                            int balance = Integer.parseInt(response);
+                            final double realBalance = balance * satoshiMutliplicator;
+                            textViewBTCBalance.setText(String.valueOf(realBalance));
 
-                                getCryptoValueOne("btc", "usd", new ConvertorFragment.APIConvertCallback() {
-                                    @Override
-                                    public void success(double value) {
-                                        Double result = valueOfOne * realBalance;
-                                        textViewUSDBalance.setText(String.valueOf(result));
-                                    }
+                            getCryptoValueOne("btc", "eur", new ConvertorFragment.APIConvertCallback() {
+                                @Override
+                                public void success(double value) {
+                                    Double result = valueOfOne * realBalance;
+                                    textViewEURBalance.setText(String.valueOf(result));
 
-                                    @Override
-                                    public void fail() {
+                                    getCryptoValueOne("btc", "usd", new ConvertorFragment.APIConvertCallback() {
+                                        @Override
+                                        public void success(double value) {
+                                            Double result = valueOfOne * realBalance;
+                                            textViewUSDBalance.setText(String.valueOf(result));
+                                        }
 
-                                    }
-                                });
-                            }
+                                        @Override
+                                        public void fail() {
 
-                            @Override
-                            public void fail() {
+                                        }
+                                    });
+                                }
 
-                            }
-                        });
+                                @Override
+                                public void fail() {
 
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Toast.makeText(getContext(), error.toString(), Toast.LENGTH_LONG).show();
+                                }
+                            });
 
-                    }
-                });
+                        }
+                    },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.e("ERROR", error.toString());
+                        }
+                    });
 
+            CryptoPlaceApplication cryptoPlaceApplication =
+                    (CryptoPlaceApplication) getActivity().getApplication();
+            cryptoPlaceApplication.getRequestQueue().add(stringRequest);
+        } else {
+            textViewBTCBalance .setText("-");
+            textViewEURBalance .setText("-");
+            textViewUSDBalance .setText("-");
+        }
 
-
-
-        CryptoPlaceApplication cryptoPlaceApplication =
-                (CryptoPlaceApplication) getActivity().getApplication();
-        cryptoPlaceApplication.getRequestQueue().add(stringRequest);
         return rootView;
+
     }
 
     public void getCryptoValueOne(String baseCurrency, String targetCurrency, final ConvertorFragment.APIConvertCallback callback){

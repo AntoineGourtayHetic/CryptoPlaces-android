@@ -24,6 +24,7 @@ import com.antoinegourtay.mob_e16_android.R;
 import com.antoinegourtay.mob_e16_android.fragments.ConvertorFragment;
 import com.antoinegourtay.mob_e16_android.fragments.MapFragment;
 import com.antoinegourtay.mob_e16_android.fragments.WalletFragment;
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.json.JSONArray;
 
@@ -43,10 +44,15 @@ public class MainActivity extends AppCompatActivity {
     String baseUrl = "https://blockchain.info/q/addressbalance/";
     String endUrl = "?confirmations=6";
 
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
 
         preferences =  getSharedPreferences("my_preferences", MODE_PRIVATE);
 
