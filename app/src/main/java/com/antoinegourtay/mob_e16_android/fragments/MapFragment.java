@@ -112,7 +112,7 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
                     mMapView.getMapAsync(new OnMapReadyCallback() {
                         @Override
                         public void onMapReady(GoogleMap googleMap) {
-                            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 11));
+                           // mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(currentPosition, 11));
                         }
                     });
                     onLaunch = false;

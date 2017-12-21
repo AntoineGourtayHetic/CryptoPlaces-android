@@ -9,15 +9,24 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.StringRequest;
+import com.antoinegourtay.mob_e16_android.CryptoPlaceApplication;
 import com.antoinegourtay.mob_e16_android.R;
 import com.antoinegourtay.mob_e16_android.fragments.ConvertorFragment;
 import com.antoinegourtay.mob_e16_android.fragments.MapFragment;
 import com.antoinegourtay.mob_e16_android.fragments.WalletFragment;
 
-import butterknife.BindView;
+import org.json.JSONArray;
+
 import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
@@ -27,12 +36,21 @@ public class MainActivity extends AppCompatActivity {
     private int mSelectedItem;
     private BottomNavigationView mBottomNavigation;
 
+    private double satoshiMutliplicator = 0.00000001;
+
+    SharedPreferences preferences;
+
+    String data;
+
+    String baseUrl = "https://blockchain.info/q/addressbalance/";
+    String endUrl = "?confirmations=6";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        SharedPreferences preferences =  getSharedPreferences("my_preferences", MODE_PRIVATE);
+        preferences =  getSharedPreferences("my_preferences", MODE_PRIVATE);
 
         // Check if onboarding_complete is false
         if(!preferences.getBoolean("onboarding_complete",false)) {
@@ -63,6 +81,38 @@ public class MainActivity extends AppCompatActivity {
         });
 
         mBottomNavigation.setSelectedItemId(R.id.navigation_places);
+
+        /**
+         * Request for balance
+         *
+         * 1EzwoHtiXB4iFwedPr49iywjZn2nnekhoj
+         *
+         */
+
+        String apiPublicKey = preferences.getString("public_key", null);
+
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Toast.makeText(MainActivity.this, response, Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, error.toString(), Toast.LENGTH_LONG).show();
+
+                    }
+                });
+
+
+
+
+        CryptoPlaceApplication cryptoPlaceApplication =
+                (CryptoPlaceApplication) getApplication();
+        cryptoPlaceApplication.getRequestQueue().add(stringRequest);
 
     }
 
@@ -126,5 +176,6 @@ public class MainActivity extends AppCompatActivity {
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
+
 
 }
