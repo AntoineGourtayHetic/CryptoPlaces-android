@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity {
 
         String apiPublicKey = preferences.getString("public_key", null);
 
-
         StringRequest stringRequest = new StringRequest(Request.Method.GET, baseUrl + apiPublicKey + endUrl,
                 new Response.Listener<String>() {
                     @Override

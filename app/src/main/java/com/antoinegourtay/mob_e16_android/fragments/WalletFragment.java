@@ -64,7 +64,7 @@ public class WalletFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_wallet, container, false);
 
         mainActivity = (MainActivity) getActivity();
-        mainActivity.getSupportActionBar().setTitle("Portefeuille");
+        mainActivity.getSupportActionBar().setTitle("Mon compte");
 
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.pager_wallet);
 
@@ -90,7 +90,7 @@ public class WalletFragment extends Fragment {
 
     private void createViewPager(ViewPager viewPager) {
         WalletAdapter adapter = new WalletAdapter(getChildFragmentManager());
-        adapter.addFrag(new CoursFragment(), "Cours");
+        adapter.addFrag(new CoursFragment(), "Portefeuile");
         adapter.addFrag(new TransactionFragment(), "Transactions");
         viewPager.setAdapter(adapter);
     }
